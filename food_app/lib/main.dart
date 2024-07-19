@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       //removing the red debug banner
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'), 
-      home: const HomePage()
+      home:  HomePage()
     );
   }
 }

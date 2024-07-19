@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:food_app/models/category_model.dart';
 //creating a stateless widget
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+   HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<CategoryModel> categories = [];
+
+  void _getCategories(){
+    categories = CategoryModel.getCategories();
+  }
+
+  @override
+  void initState() {
+    _getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
+    _getCategories();//called at the beginning so that the list is filled first then the widgets are displayed.
     // Scaffold class in Flutter which provides many widgets, eg app bar, drawer, floating action button, bottom navigation bar, snack bar
     return Scaffold(
       appBar: appBar(),
@@ -16,36 +33,75 @@ class HomePage extends StatelessWidget {
         children: [
           _searchField(),
           SizedBox(height: 40,), // create a distance from the top
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0), // sets space only on the left
-                child: Text(
-                  'Category',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              SizedBox(height: 15,),
-              Container(
-                height: 150,
-                color: Colors.green,
-                child: ListView.builder(
-                  itemCount: 10, // Define the number of items
-                  itemBuilder: (context, index) { // used to display the items
-                    return Container();
-                  },
-                ),
-              )
-            ],
-          )
+          _categoriesSection()
         ],
       ),
     );
+  }
+
+  Column _categoriesSection() {
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0), // sets space only on the left
+              child: Text(
+                'Category',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            SizedBox(height: 15,),
+            Container(
+              height: 120,
+              child: ListView.separated(//creates a space between the items
+                itemCount: categories.length, // Define the number of items
+                scrollDirection: Axis.horizontal, //setting the value of the scroll direction
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                ),
+                separatorBuilder: (context, index) => SizedBox(width:25,),
+                itemBuilder: (context, index) { // used to display the items
+                  return Container(
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: categories[index].boxColor.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16)
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SvgPicture.asset(categories[index].iconPath),
+                          ),
+                        ),
+                        Text(
+                          categories[index].name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 14
+                          ),
+                        )
+                    ],),
+                  );
+                },
+              ),
+            )
+          ],
+        );
   }
 
   Container _searchField() {
