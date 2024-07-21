@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_app/models/category_model.dart';
 import 'package:food_app/models/diet_model.dart';
+import 'package:food_app/models/popular_model.dart';
 //creating a stateless widget
 class HomePage extends StatefulWidget {
    HomePage({super.key});
@@ -13,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<CategoryModel> categories = [];
   List<DietModel> diets = [];
+  List<PopularDietsModel> popularDiets = [];
 
   
   //getting the list from the diet function
@@ -20,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   void _getInitialInfo(){
     categories = CategoryModel.getCategories();
     diets=DietModel.getDiets();
+    popularDiets = PopularDietsModel.getPopularDiets();
   }
 
   
@@ -31,14 +34,93 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: appBar(),
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // aligning the content to the left
+      body: ListView(//makes the page scrollable vertically
         children: [
           _searchField(),
-          SizedBox(height: 40,), // create a distance from the top
+          const SizedBox(height: 40,), // create a distance from the top
           _categoriesSection(),
-          SizedBox(height: 40,),
-          _dietSection()
+          const SizedBox(height: 40,),
+          _dietSection(),
+          const SizedBox(height: 40,),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Popular',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    )
+                ),
+              ),
+              const SizedBox(height: 15,),
+              ListView.separated(
+                itemBuilder: (context,index) {
+                  return Container(
+                    height: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SvgPicture.asset(popularDiets[index].iconPath,width:65,
+                        height: 65,),
+                        
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              popularDiets[index].name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                fontSize: 16
+                              ),
+                            ),
+                            Text(
+                               popularDiets[index].level + ' | ' + popularDiets[index].duration + ' | ' + popularDiets[index].calorie,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff7B6F72),
+                                fontSize: 13
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child:SvgPicture.asset('assets/icons/button.svg',width:30, height:30,)
+                        )
+                        
+                      ],),
+                    decoration: BoxDecoration(
+                      color: popularDiets[index].boxIsSelected ?
+                       Colors.white : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: popularDiets[index].boxIsSelected ? [
+                        BoxShadow(
+                          color: const Color(0xff1D1617).withOpacity(0.07),
+                          offset: const Offset(0,10),
+                          blurRadius: 40,
+                          spreadRadius: 0
+                        )
+                      ] : []
+                    ),
+                  );
+                }, 
+                separatorBuilder: (context, index) => const SizedBox(height: 25),
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20
+                ),
+                itemCount: popularDiets.length,
+                shrinkWrap: true,
+                )
+            ],
+          ),
+          const SizedBox(height: 40,), //creating space from the bottom of the page
         ],
       ),
     );
@@ -48,8 +130,8 @@ class _HomePageState extends State<HomePage> {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left:20),
+            const Padding(
+              padding: EdgeInsets.only(left:20),
               child: Text(
                 'Recommendation\nfor Diet',
                 style: TextStyle(
@@ -59,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                   )
               ),
             ),
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             Container(
               height: 240,
               child: ListView.separated(// separates the items in the list view
@@ -78,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Text(
                               diets[index].name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,
                                 fontSize: 16
@@ -86,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Text(
                           diets[index].level + ' | ' + diets[index].duration + ' | ' + diets[index].calorie,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xff786F72),
                             fontSize: 13,
                             fontWeight: FontWeight.w400
@@ -119,10 +201,10 @@ class _HomePageState extends State<HomePage> {
                       ],),
                   );
                 }, 
-                separatorBuilder: (context, index)=> SizedBox(width: 25,), 
+                separatorBuilder: (context, index)=> const SizedBox(width: 25,), 
                 itemCount: diets.length,
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: 20,
                   right: 20
                 ),
@@ -136,8 +218,8 @@ class _HomePageState extends State<HomePage> {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0), // sets space only on the left
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0), // sets space only on the left
               child: Text(
                 'Category',
                 style: TextStyle(
@@ -147,17 +229,17 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             Container(
               height: 120,
               child: ListView.separated(//creates a space between the items
                 itemCount: categories.length, // Define the number of items
                 scrollDirection: Axis.horizontal, //setting the value of the scroll direction
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: 20,
                   right: 20,
                 ),
-                separatorBuilder: (context, index) => SizedBox(width:25,),
+                separatorBuilder: (context, index) => const SizedBox(width:25,),
                 itemBuilder: (context, index) { // used to display the items
                   return Container(
                     width: 100,
@@ -171,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           width: 50,
                           height: 50,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle
                           ),
@@ -182,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           categories[index].name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             color: Colors.black,
                             fontSize: 14
@@ -199,7 +281,7 @@ class _HomePageState extends State<HomePage> {
 
   Container _searchField() {
     return Container(
-      margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -214,9 +296,9 @@ class _HomePageState extends State<HomePage> {
           filled: true,
           fillColor: Colors.white,
           // reducing the height of the text field
-          contentPadding: EdgeInsets.all(15),
+          contentPadding: const EdgeInsets.all(15),
           hintText: 'Search Pancake',
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             color: Color(0xffDDDADA),
             fontSize: 14,
           ),
@@ -231,7 +313,7 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  VerticalDivider(
+                  const VerticalDivider(
                     color: Colors.black,
                     indent: 10, // create space from the top
                     endIndent: 10, // create space from the bottom
@@ -256,7 +338,7 @@ class _HomePageState extends State<HomePage> {
 
   AppBar appBar() {
     return AppBar(
-      title: Text(
+      title: const Text(
         'Breakfast',
         style: TextStyle(
           color: Colors.black,
@@ -269,7 +351,7 @@ class _HomePageState extends State<HomePage> {
       leading: GestureDetector(
         onTap: () {},
         child: Container(
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           alignment: Alignment.center,
           child: SvgPicture.asset(
             'assets/icons/Arrow - Left 2.svg',
@@ -286,7 +368,7 @@ class _HomePageState extends State<HomePage> {
         GestureDetector(
           onTap: () {},
           child: Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             alignment: Alignment.center,
             width: 37,
             child: Padding(
