@@ -12,6 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //used to open the navigation drawer since the scaffold cannot be accessed by the appbar
+  //makes scaffold accessible globally
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<CategoryModel> categories = [];
   List<DietModel> diets = [];
   List<PopularDietsModel> popularDiets = [];
@@ -32,7 +35,39 @@ class _HomePageState extends State<HomePage> {
     _getInitialInfo();//called at the beginning so that the list is filled first then the widgets are displayed.
     // Scaffold class in Flutter which provides many widgets, eg app bar, drawer, floating action button, bottom navigation bar, snack bar
     return Scaffold(
+      key: _scaffoldKey,
       appBar: appBar(),
+      //navigation drawer
+      drawer: Drawer(
+        //adding a listview to ensure the user can scroll through the options in the drawer if the vertical space is not enough
+        child: ListView(
+          //removing any padding from the listview
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.yellowAccent,
+            ),
+            child: Text('Drawer Header')
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: (){
+                //Close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: (){
+                //Close the drawer
+                Navigator.pop(context);
+              },
+            )
+          ]
+          
+        ),
+      ),
       backgroundColor: Colors.white,
       body: ListView(//makes the page scrollable vertically
         children: [
@@ -349,7 +384,9 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.amberAccent,
       centerTitle: true,
       leading: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
         child: Container(
           margin: const EdgeInsets.all(10),
           alignment: Alignment.center,
