@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
       body: ListView(//makes the page scrollable vertically
         children: [
           _searchField(),

@@ -12,9 +12,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
+      theme: ThemeData(
+          useMaterial3: true,
+          //the theme when changed changes globally
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          fontFamily: 'Poppins'
+        ),
       //removing the red debug banner
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Poppins'), 
       home:  HomePage()
     );
   }
