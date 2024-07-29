@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
     // Scaffold class in Flutter which provides many widgets, eg app bar, drawer, floating action button, bottom navigation bar, snack bar
     return Scaffold(
       key: _scaffoldKey,
+      
       appBar: appBar(),
       //navigation drawer
       drawer: Drawer(
@@ -86,7 +87,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      body: ListView(//makes the page scrollable vertically
+      body: OrientationBuilder(
+        builder: (context,orientation){
+          return ListView(//makes the page scrollable vertically
         children: [
           _searchField(),
           const SizedBox(height: 40,), // create a distance from the top
@@ -94,16 +97,19 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 40,),
           _dietSection(),
           const SizedBox(height: 40,),
-          _popular(),
+          _popular(orientation),
           const SizedBox(height: 40,), //creating space from the bottom of the page
-
+          
           
         ],
-      ),
+      );
+
+        })
+      
     );
   }
 
-  Column _popular() {
+  Column _popular(Orientation orientation) {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
