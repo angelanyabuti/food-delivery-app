@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   //used to open the navigation drawer since the scaffold cannot be accessed by the appbar
   //makes scaffold accessible globally and is also used for the scaffold messanger
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _selectedIndex = 0;
   List<CategoryModel> categories = [];
   List<DietModel> diets = [];
   List<PopularDietsModel> popularDiets = [];
@@ -44,68 +45,96 @@ class _HomePageState extends State<HomePage> {
       
     );
   }
-
+  //called when a bottom navigation bar linked is tapped
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   
 
   @override
   Widget build(BuildContext context) {
     _getInitialInfo();//called at the beginning so that the list is filled first then the widgets are displayed.
     // Scaffold class in Flutter which provides many widgets, eg app bar, drawer, floating action button, bottom navigation bar, snack bar
-    return Scaffold(
-      key: _scaffoldKey,
-      
-      appBar: appBar(),
-      //navigation drawer
-      drawer: Drawer(
-        //adding a listview to ensure the user can scroll through the options in the drawer if the vertical space is not enough
-        child: ListView(
-          //removing any padding from the listview
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.yellowAccent,
-            ),
-            child: Text('Drawer Header')
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: (){
-                //Close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: (){
-                //Close the drawer
-                Navigator.pop(context);
-              },
-            )
-          ]
+    
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        key: _scaffoldKey,
+        
+        appBar: appBar(
           
         ),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-      body: OrientationBuilder(
-        builder: (context,orientation){
-          return ListView(//makes the page scrollable vertically
-        children: [
-          _searchField(),
-          const SizedBox(height: 40,), // create a distance from the top
-          _categoriesSection(),
-          const SizedBox(height: 40,),
-          _dietSection(),
-          const SizedBox(height: 40,),
-          _popular(orientation),
-          const SizedBox(height: 40,), //creating space from the bottom of the page
-          
-          
-        ],
-      );
-
-        })
+        //navigation drawer
+        drawer: Drawer(
+          //adding a listview to ensure the user can scroll through the options in the drawer if the vertical space is not enough
+          child: ListView(
+            //removing any padding from the listview
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.yellowAccent,
+              ),
+              child: Text('Drawer Header')
+              ),
+              ListTile(
+                title: const Text('Item 1'),
+                onTap: (){
+                  //Close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text('Item 2'),
+                onTap: (){
+                  //Close the drawer
+                  Navigator.pop(context);
+                },
+              )
+            ]
+            
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+        body: OrientationBuilder(
+          builder: (context,orientation){
+            return ListView(//makes the page scrollable vertically
+          children: [
+            _searchField(),
+            const SizedBox(height: 40,), // create a distance from the top
+            _categoriesSection(),
+            const SizedBox(height: 40,),
+            _dietSection(),
+            const SizedBox(height: 40,),
+            _popular(orientation),
+            const SizedBox(height: 40,), //creating space from the bottom of the page
+            
+            
+          ],
+        );
       
+          }),
+        
+        //creating the bottom navigation bar 
+        bottomNavigationBar: BottomNavigationBar(
+          items:const <BottomNavigationBarItem> [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Browse',),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Account',),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
+          )
+      ),
     );
   }
 
@@ -454,6 +483,13 @@ class _HomePageState extends State<HomePage> {
           ),
         )
       ],
+      bottom: TabBar(
+        tabs: [
+          Tab(icon: Icon(Icons.fastfood), text: 'Popular'),
+          Tab(icon: Icon(Icons.category), text: 'Categories'),
+          Tab(icon: Icon(Icons.dining), text: 'Diets'),
+        ],
+      ),
     );
   }
 
