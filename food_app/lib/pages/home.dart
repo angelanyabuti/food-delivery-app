@@ -5,8 +5,7 @@ import 'package:food_app/models/diet_model.dart';
 import 'package:food_app/models/popular_model.dart';
 //creating a stateless widget
 class HomePage extends StatefulWidget {
-   HomePage({super.key});
-
+const HomePage({Key? key}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -67,36 +66,7 @@ class _HomePageState extends State<HomePage> {
           
         ),
         //navigation drawer
-        drawer: Drawer(
-          //adding a listview to ensure the user can scroll through the options in the drawer if the vertical space is not enough
-          child: ListView(
-            //removing any padding from the listview
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.yellowAccent,
-              ),
-              child: Text('Drawer Header')
-              ),
-              ListTile(
-                title: const Text('Item 1'),
-                onTap: (){
-                  //Close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text('Item 2'),
-                onTap: (){
-                  //Close the drawer
-                  Navigator.pop(context);
-                },
-              )
-            ]
-            
-          ),
-        ),
+        drawer: _drawer(context),
         backgroundColor: Theme.of(context).colorScheme.surfaceDim,
         body: OrientationBuilder(
           builder: (context,orientation){
@@ -117,26 +87,44 @@ class _HomePageState extends State<HomePage> {
       
           }),
         
-        //creating the bottom navigation bar 
-        bottomNavigationBar: BottomNavigationBar(
-          items:const <BottomNavigationBarItem> [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Browse',),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Account',),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-          )
       ),
     );
   }
+
+  Drawer _drawer(BuildContext context) {
+    return Drawer(
+        //adding a listview to ensure the user can scroll through the options in the drawer if the vertical space is not enough
+        child: ListView(
+          //removing any padding from the listview
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.amber,
+            ),
+            child: Text('Drawer Header')
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: (){
+                //Close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: (){
+                //Close the drawer
+                Navigator.pop(context);
+              },
+            )
+          ]
+          
+        ),
+      );
+  }
+
+  
 
   Column _popular(Orientation orientation) {
     return Column(
@@ -439,7 +427,7 @@ class _HomePageState extends State<HomePage> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      backgroundColor: Colors.amberAccent,
+      backgroundColor: Colors.amber,
       centerTitle: true,
       leading: GestureDetector(
         onTap: () {
