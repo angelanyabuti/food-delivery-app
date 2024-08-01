@@ -47,6 +47,7 @@ class _MyAppState extends State<MyApp> {
       //removing the red debug banner
       debugShowCheckedModeBanner: false,
       home:  Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surfaceDim,
         body: _pages[_selectedIndex],
         bottomNavigationBar: _bottomNavigationBar()
         )

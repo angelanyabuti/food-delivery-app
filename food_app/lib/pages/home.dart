@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surfaceDim,
         key: _scaffoldKey,
         
         appBar: appBar(
@@ -67,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         ),
         //navigation drawer
         drawer: _drawer(context),
-        backgroundColor: Theme.of(context).colorScheme.surfaceDim,
+        
         body: OrientationBuilder(
           builder: (context,orientation){
             return ListView(//makes the page scrollable vertically
