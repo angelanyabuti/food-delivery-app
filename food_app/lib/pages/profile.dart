@@ -26,7 +26,13 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(children: <Widget>[
               //Adding textformfields and elevated button
               TextFormField(
+                autofocus: true,
                 decoration: const InputDecoration(
+                   border: UnderlineInputBorder(),
+                   labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blueAccent
+                   ),
                   labelText: 'First Name',
                 ),
                 validator: (value) {
@@ -38,6 +44,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               TextFormField(
                 decoration: const InputDecoration(
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blueAccent
+                   ),
                   labelText: 'Last Name',
                 ),
                 validator: (value) {
@@ -49,6 +59,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               TextFormField(
                 decoration: const InputDecoration(
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blueAccent
+                   ),
                   labelText: 'Email',
                 ),
                 validator: (value) {
@@ -58,8 +72,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   return null;
                 },
               ),
-              TextFormField(
+              TextFormField(               
                 decoration: const InputDecoration(
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blueAccent
+                   ),
                   labelText: 'Phone number',
                 ),
                 validator: (value) {
