@@ -16,6 +16,12 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Center(child: Text('Account')),
         backgroundColor: Colors.amber,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
       
       ),
       body: Center(

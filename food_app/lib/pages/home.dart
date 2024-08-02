@@ -421,7 +421,7 @@ class _HomePageState extends State<HomePage> {
   AppBar appBar() {
     return AppBar(
       title: const Text(
-        'Breakfast',
+        'Diet',
         style: TextStyle(
           color: Colors.black,
           fontSize: 18,
@@ -437,15 +437,8 @@ class _HomePageState extends State<HomePage> {
         child: Container(
           margin: const EdgeInsets.all(10),
           alignment: Alignment.center,
-          child: SvgPicture.asset(
-            'assets/icons/Arrow - Left 2.svg',
-            height: 20,
-            width: 20,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(10),
-          ),
+          child: Icon(Icons.menu),
+          
         ),
       ),
       actions: [
